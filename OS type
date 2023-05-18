@@ -1,0 +1,29 @@
+import platform
+
+def get_os_type():
+    os_name = platform.system()
+
+    if os_name == "Windows":
+        return "Windows"
+    elif os_name == "Darwin":
+        return "macOS"
+    elif os_name == "Linux":
+        dist = platform.dist()[0].lower()
+        if dist == "ubuntu":
+            return "Ubuntu"
+        elif dist == "debian":
+            return "Debian"
+        elif dist == "fedora":
+            return "Fedora"
+        elif dist == "centos":
+            return "CentOS"
+        else:
+            return "Linux"
+    else:
+        return "Unknown"
+
+# Example usage
+os_type = get_os_type()
+print("Operating System: " + os_type)
+
+# CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
