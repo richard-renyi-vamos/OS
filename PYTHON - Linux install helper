@@ -1,0 +1,25 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def show_installation_process():
+    process = '''
+    Step 1: Download the Linux distribution ISO file.
+    Step 2: Create a bootable USB drive using tools like Rufus or Etcher.
+    Step 3: Boot your computer from the USB drive.
+    Step 4: Follow the on-screen instructions to start the installation process.
+    Step 5: Select the installation language, keyboard layout, and other preferences.
+    Step 6: Choose the installation type (e.g., alongside existing OS or custom partitioning).
+    Step 7: Set up the username, password, and computer name.
+    Step 8: Wait for the installation to complete.
+    Step 9: Reboot your computer and remove the USB drive.
+    Step 10: Enjoy your new Linux installation!
+    '''
+
+    messagebox.showinfo("Linux Installation Process", process)
+
+root = tk.Tk()
+root.withdraw()
+
+show_installation_process()
+
+# CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
