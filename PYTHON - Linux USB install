@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Define your Ubuntu version and architecture
+UBUNTU_VERSION="20.04.3"
+ARCHITECTURE="amd64"
+
+# Define the target USB device (MAKE SURE TO SET THIS CORRECTLY)
+USB_DEVICE="/dev/sdX"  # Replace 'X' with the actual device identifier
+
+# URL for the Ubuntu ISO image
+UBUNTU_ISO_URL="http://releases.ubuntu.com/${UBUNTU_VERSION}/ubuntu-${UBUNTU_VERSION}-desktop-${ARCHITECTURE}.iso"
+
+# Check if the USB device exists and ask for confirmation
+if [ ! -b "$USB_DEVICE" ]; then
+    echo "USB device not found: $USB_DEVICE"
+    exit 1
+fi
+
+read -p "WARNING: This will erase all data on $USB_DEVICE. Continue? (y/n): " confirmation
+if [ "$confirmation" != "y" ]; then
+    echo "Installation aborted."
+    exit 1
+fi
+
+# Download the Ubuntu ISO image
+echo "Downloading Ubuntu ISO..."
+wget "$UBUNTU_ISO_URL" -O ubuntu.iso
+
+# Write the ISO to the USB device
+echo "Writing Ubuntu to the USB device. This may take a few minutes..."
+sudo dd if=ubuntu.iso of="$USB_DEVICE" bs=4M status=progress
+
+# Create a persistence partition (optional)
+# Uncomment the next lines if you want a persistence partition
+# echo -e "100\n\n\n\n" | sudo parted "$USB_DEVICE"
+# sudo mkfs.ext4 "${USB_DEVICE}2" -L casper-rw
+
+# Install the bootloader (GRUB)
+sudo mount "${USB_DEVICE}1" /mnt
+sudo grub-install --boot-directory=/mnt/boot --force "$USB_DEVICE"
+sudo umount /mnt
+
+echo "Linux installation on USB complete!"
+
+# Clean up
+rm ubuntu.iso
+
+echo "You can now boot from the USB drive and install Ubuntu."
+
+
+# CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
